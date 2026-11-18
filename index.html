@@ -546,6 +546,38 @@
     .hidden {
       display: none !important;
     }
+
+    /* Contenedor relativo para posicionar el ícono dentro del input */
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-wrapper input[type="password"],
+.password-wrapper input[type="text"] {
+  width: 100%;
+  padding-right: 45px; /* Espacio para que el texto no quede debajo del ícono */
+}
+
+/* Botón del ícono de ojo */
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: var(--muted);
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toggle-password:hover {
+  color: var(--olive);
+}
   </style>
 </head>
 
