@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta property="og:image" content="https://encuestas-malix.netlify.app/logo.png" />
+  <meta property="og:image:secure_url" content="https://encuestas-malix.netlify.app/logo.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="2314" />
+  <meta property="og:image:height" content="2618" />
+  <meta property="og:url" content="https://encuestas-malix.netlify.app/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="El Perro Malix — Encuestas y Opiniones" />
+  <meta property="og:description" content="Comparte tu opinión sobre el paseo de tu peludo o avísanos cualquier pausa o ajuste de servicio de forma rápida y sencilla." />
+  <title>El Perro Malix — Encuestas</title>
+  <style>
+    @font-face {
+      font-family: 'Poppins';
+      src: url('./Aero%20Matics%20Italic.woff2') format('woff2');
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'Montserrat';
+      src: url('./Aero%20Matics%20Italic.woff2') format('woff2');
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+    }
+
+    :root {
+      --olive: #5A5E2F;
+      --olive-dark: #434722;
+      --lime: #C8D130;
+      --lime-soft: #F3F6D4;
+      --brown: #8C5A32;
+      --brown-soft: #F6EFE9;
+      --bg: #FAF9F5;
+      --card: #FFFFFF;
+      --text: #262818;
+      --muted: #686B56;
+      --border: #E4E2D5;
+      --green-badge-bg: #E6F4EA;
+      --green-badge-text: #1E6F3D;
+      --yellow-badge-bg: #FEF6D8;
+      --yellow-badge-text: #8A5A00;
+      --radius: 16px;
+      --shadow: 0 8px 24px rgba(90, 94, 47, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 16px 14px 48px;
+    }
+
+    .container {
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .logo-wrap {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .brand-logo {
+      display: block;
+      width: 130px;
+      height: auto;
+    }
+
+    .admin-pill {
+      display: none;
+      margin-top: 8px;
+      background: var(--olive);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 999px;
+      letter-spacing: 0.04em;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      background: #ECEAD9;
+      padding: 6px;
+      border-radius: 14px;
+      margin-bottom: 20px;
+    }
+
+    .tabs.admin-tabs {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .tab-btn {
+      border: none;
+      background: transparent;
+      padding: 12px 10px;
+      border-radius: 10px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--olive);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: var(--olive);
+      color: #FFFFFF;
+      box-shadow: 0 4px 12px rgba(90, 94, 47, 0.2);
+    }
+
+    /* Cards & Forms */
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 22px 18px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+
+    .section-title {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: var(--olive);
+      margin-bottom: 4px;
+    }
+
+    .section-desc {
+      font-size: 0.86rem;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label.field-label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.88rem;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    @media (max-width: 400px) {
+      .row-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 11px 13px;
+      border: 1.5px solid var(--border);
+      border-radius: 11px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.92rem;
+      color: var(--text);
+      background: #FCFBF8;
+      transition: border-color 0.2s;
+    }
+
+    input[type="text"]:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--olive);
+      background: #FFFFFF;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 78px;
+    }
+
+    /* Star Rating */
+    .stars {
+      display: flex;
+      gap: 8px;
+    }
+
+    .star-btn {
+      background: none;
+      border: none;
+      font-size: 2rem;
+      line-height: 1;
+      color: #D6D4C4;
+      cursor: pointer;
+      transition: transform 0.15s, color 0.15s;
+    }
+
+    .star-btn.active {
+      color: var(--lime);
+      text-shadow: 0 2px 6px rgba(140, 90, 50, 0.25);
+      transform: scale(1.08);
+    }
+
+    /* Mood & Highlight Pills */
+    .pill-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .pill-btn {
+      border: 1.5px solid var(--border);
+      background: #FCFBF8;
+      color: var(--text);
+      padding: 8px 13px;
+      border-radius: 999px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.83rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .pill-btn.selected {
+      background: var(--lime-soft);
+      border-color: var(--olive);
+      color: var(--olive-dark);
+      font-weight: 600;
+    }
+
+    /* NPS 0-10 */
+    .nps-grid {
+      display: grid;
+      grid-template-columns: repeat(11, 1fr);
+      gap: 4px;
+    }
+
+    .nps-btn {
+      aspect-ratio: 1 / 1.15;
+      border: 1.5px solid var(--border);
+      background: #FCFBF8;
+      border-radius: 8px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.8rem;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .nps-btn.selected {
+      background: var(--olive);
+      color: #FFFFFF;
+      border-color: var(--olive);
+    }
+
+    .nps-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 5px;
+    }
+
+    /* Photo upload */
+    .file-box {
+      border: 1.5px dashed var(--brown);
+      background: var(--brown-soft);
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 0.85rem;
+      color: var(--brown);
+      font-weight: 500;
+    }
+
+    .file-box input {
+      display: none;
+    }
+
+    .preview-img {
+      max-width: 100%;
+      max-height: 170px;
+      border-radius: 10px;
+      margin-top: 10px;
+      display: none;
+      object-fit: cover;
+    }
+
+    /* Checkbox */
+    .check-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.83rem;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .check-row input {
+      margin-top: 3px;
+      accent-color: var(--olive);
+      width: 17px;
+      height: 17px;
+    }
+
+    /* Pause/Cancel Big Cards */
+    .reason-cards {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .reason-card {
+      text-align: left;
+      border: 2px solid var(--border);
+      background: #FCFBF8;
+      border-radius: 14px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .reason-card:hover {
+      border-color: var(--olive);
+    }
+
+    .reason-card.selected {
+      border-color: var(--olive);
+      background: var(--lime-soft);
+      box-shadow: 0 4px 14px rgba(90, 94, 47, 0.12);
+    }
+
+    .reason-icon {
+      font-size: 1.65rem;
+      flex-shrink: 0;
+    }
+
+    .reason-title {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.96rem;
+      color: var(--text);
+    }
+
+    .reason-sub {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    /* Buttons */
+    .btn-primary {
+      width: 100%;
+      border: none;
+      background: var(--olive);
+      color: #FFFFFF;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.96rem;
+      padding: 14px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-primary:hover {
+      background: var(--olive-dark);
+    }
+
+    .btn-wa {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      background: #25D366;
+      color: #FFFFFF;
+      text-decoration: none;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.96rem;
+      padding: 14px 16px;
+      border-radius: 12px;
+      margin-top: 14px;
+      box-shadow: 0 6px 16px rgba(37, 211, 102, 0.28);
+    }
+
+    .btn-secondary {
+      width: 100%;
+      border: 1.5px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      font-size: 0.85rem;
+      padding: 10px;
+      border-radius: 10px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    /* Client Thank You Screen */
+    .thank-you-box {
+      display: none;
+      text-align: center;
+      padding: 12px 4px;
+    }
+
+    .thank-you-emoji {
+      font-size: 2.6rem;
+      margin-bottom: 8px;
+    }
+
+    .thank-you-title {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: var(--olive);
+      margin-bottom: 8px;
+    }
+
+    .thank-you-text {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .photo-reminder {
+      display: none;
+      background: var(--brown-soft);
+      color: var(--brown);
+      font-size: 0.82rem;
+      padding: 10px 12px;
+      border-radius: 10px;
+      margin-top: 10px;
+      font-weight: 500;
+    }
+
+    /* Admin Only Panel */
+    .admin-panel {
+      display: none;
+      margin-top: 22px;
+      border-top: 2px dashed var(--brown);
+      padding-top: 18px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.8rem;
+      margin-bottom: 12px;
+    }
+
+    .badge-green {
+      background: var(--green-badge-bg);
+      color: var(--green-badge-text);
+    }
+
+    .badge-yellow {
+      background: var(--yellow-badge-bg);
+      color: var(--yellow-badge-text);
+    }
+
+    .copy-box {
+      background: #F5F4EC;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 13px;
+      margin-bottom: 12px;
+    }
+
+    .copy-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--brown);
+    }
+
+    .copy-btn {
+      background: var(--olive);
+      color: #fff;
+      border: none;
+      border-radius: 7px;
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .copy-content {
+      font-size: 0.84rem;
+      white-space: pre-wrap;
+      color: var(--text);
+    }
+
+    .records-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .record-card {
+      background: #FCFBF8;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .record-heading {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+      color: var(--olive);
+      font-weight: 700;
+    }
+
+    .record-date,
+    .record-details {
+      font-size: 0.82rem;
+      color: var(--muted);
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .record-suggestion {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+      font-size: 0.84rem;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .record-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 12px;
+    }
+
+    .record-delete-btn {
+      border: 1px solid #B42318;
+      border-radius: 8px;
+      padding: 7px 10px;
+      background: #FFF5F4;
+      color: #B42318;
+      font: inherit;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <div class="logo-wrap">
+        <img class="brand-logo" src="./logo.png" alt="El Perro Malix — Caminata tranquila y obediencia en casa" />
+        <div id="adminBadge" class="admin-pill">MODO INTERNO ACTIVO</div>
+      </div>
+    </header>
+
+    <!-- Navegación de Pestañas -->
+    <div class="tabs" id="surveyTabs">
+      <button class="tab-btn active" data-tab="post-paseo">🐾 Post-Paseo</button>
+      <button class="tab-btn" data-tab="pausa">⏸️ Pausa / Ajuste</button>
+      <button class="tab-btn hidden" id="recordsTabButton" data-tab="registros">📋 Registros</button>
+    </div>
+
+    <!-- PESTAÑA 1: POST-PASEO -->
+    <section id="tab-post-paseo" class="card">
+      <div id="form-post-wrap">
+        <h2 class="section-title">¿Cómo estuvo el paseo hoy?</h2>
+        <p class="section-desc">Tu opinión nos ayuda a seguir cuidando a tu peludo con calma y estructura.</p>
+
+        <form id="formPostPaseo">
+          <div class="form-group row-2">
+            <div>
+              <label class="field-label" for="humanName">Tu nombre *</label>
+              <input type="text" id="humanName" placeholder="Ej. Sofía" required />
+            </div>
+            <div>
+              <label class="field-label" for="dogName">Nombre de tu perro *</label>
+              <input type="text" id="dogName" placeholder="Ej. Tucho" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="field-label">Calificación del paseo *</label>
+            <div class="stars" id="starContainer">
+              <button type="button" class="star-btn active" data-val="1">★</button>
+              <button type="button" class="star-btn active" data-val="2">★</button>
+              <button type="button" class="star-btn active" data-val="3">★</button>
+              <button type="button" class="star-btn active" data-val="4">★</button>
+              <button type="button" class="star-btn active" data-val="5">★</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="field-label">¿Cómo regresó a casa?</label>
+            <div class="pill-grid" id="moodPills">
+              <button type="button" class="pill-btn selected" data-val="Feliz y cansado">😴 Feliz y cansado</button>
+              <button type="button" class="pill-btn" data-val="Tranquilo y equilibrado">🌿 Tranquilo y
+                equilibrado</button>
+              <button type="button" class="pill-btn" data-val="Contento y relajado">🐾 Contento y relajado</button>
+              <button type="button" class="pill-btn" data-val="Con energía aún">⚡ Con energía aún</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="field-label">¿Qué fue lo que más te gustó?</label>
+            <div class="pill-grid" id="likePills" style="margin-bottom: 8px;">
+              <button type="button" class="pill-btn selected" data-val="La puntualidad y reporte">⏱️ Puntualidad y
+                reporte</button>
+              <button type="button" class="pill-btn" data-val="El manejo tranquilo sin tirones">🦮 Manejo
+                tranquilo</button>
+              <button type="button" class="pill-btn" data-val="La atención personalizada">💚 Atención
+                personalizada</button>
+              <button type="button" class="pill-btn" data-val="El avance en su comportamiento">✨ Avance en
+                conducta</button>
+            </div>
+            <textarea id="extraComment" placeholder="¿Quieres agregar algún detalle extra? (Opcional)"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="field-label">¿Qué tan probable es que nos recomiendes? (0 a 10)</label>
+            <div class="nps-grid" id="npsGrid"></div>
+            <div class="nps-labels">
+              <span>0 - Poco probable</span>
+              <span>10 - Totalmente</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="field-label">Foto de tu peludo después del paseo (Opcional)</label>
+            <label class="file-box">
+              📸 Toca aquí para elegir una foto
+              <input type="file" id="dogPhoto" accept="image/*" />
+              <img id="photoPreview" class="preview-img" alt="Vista previa" />
+            </label>
+          </div>
+
+          <div class="form-group">
+            <label class="check-row">
+              <input type="checkbox" id="authSocial" checked />
+              <span>Autorizo compartir mi testimonio y foto en Google Maps e Instagram de <strong>El Perro
+                  Malix</strong>.</span>
+            </label>
+          </div>
+
+          <button type="submit" class="btn-primary">Enviar mi opinión</button>
+        </form>
+      </div>
+
+      <!-- Pantalla de agradecimiento para el cliente (Post-Paseo) -->
+      <div id="thanks-post" class="thank-you-box">
+        <div class="thank-you-emoji">🐾💚</div>
+        <div class="thank-you-title" id="thanksPostTitle">¡Muchas gracias!</div>
+        <p class="thank-you-text">Para registrar tu respuesta al instante, solo presiona el botón verde y envíanos el
+          mensaje prellenado en WhatsApp.</p>
+        <div id="photoReminder" class="photo-reminder">
+          📸 Recuerda adjuntar la foto de tu peludo directamente en el chat de WhatsApp al enviar.
+        </div>
+        <a id="waLinkPost" href="#" target="_blank" rel="noopener" class="btn-wa">
+          Enviar respuestas por WhatsApp
+        </a>
+        <button type="button" class="btn-secondary" onclick="resetPostForm()">Contestar otra vez</button>
+      </div>
+
+      <!-- Panel Interno (Solo visible con ?admin=malix2026) -->
+      <div id="adminPostPanel" class="admin-panel">
+        <div class="copy-box">
+          <div class="copy-header">
+            <span>📍 Texto listo para Google Maps</span>
+            <button type="button" class="copy-btn" onclick="copyText('googleReviewOut', this)">Copiar</button>
+          </div>
+          <div id="googleReviewOut" class="copy-content"></div>
+        </div>
+        <div class="copy-box">
+          <div class="copy-header">
+            <span>📸 Copy listo para Instagram</span>
+            <button type="button" class="copy-btn" onclick="copyText('igCopyOut', this)">Copiar</button>
+          </div>
+          <div id="igCopyOut" class="copy-content"></div>
+        </div>
+        <div class="copy-box">
+          <div class="copy-header">
+            <span>💬 Respuesta sugerida</span>
+            <button type="button" class="copy-btn" onclick="copyText('postReplyOut', this)">Copiar</button>
+          </div>
+          <div id="postReplyOut" class="copy-content"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PESTAÑA 2: PAUSA / CANCELACIÓN -->
+    <section id="tab-pausa" class="card hidden">
+      <div id="form-pausa-wrap">
+        <h2 class="section-title">Pausar o ajustar servicio</h2>
+        <p class="section-desc">Elige la opción que mejor describa tu situación. Sin compromisos ni preguntas incómodas.
+        </p>
+
+        <form id="formPausa">
+          <div class="reason-cards" id="reasonCards">
+            <button type="button" class="reason-card selected" data-reason="Pausa temporal" data-type="Externo">
+              <span class="reason-icon">🗓️</span>
+              <div>
+                <div class="reason-title">Pausa temporal</div>
+                <div class="reason-sub">Viaje, vacaciones o agenda ocupada por unos días.</div>
+              </div>
+            </button>
+
+            <button type="button" class="reason-card" data-reason="Tema de mi perrito" data-type="Externo">
+              <span class="reason-icon">🩺</span>
+              <div>
+                <div class="reason-title">Tema de mi perrito</div>
+                <div class="reason-sub">Celo, recuperación médica, vacunas o descanso.</div>
+              </div>
+            </button>
+
+            <button type="button" class="reason-card" data-reason="Ajuste de casa" data-type="Externo">
+              <span class="reason-icon">🏡</span>
+              <div>
+                <div class="reason-title">Ajuste de casa</div>
+                <div class="reason-sub">Cambio de horarios familiares, mudanza o presupuesto.</div>
+              </div>
+            </button>
+
+            <button type="button" class="reason-card" data-reason="Quiero ajustar algo del servicio"
+              data-type="Revisar Servicio">
+              <span class="reason-icon">🛠️</span>
+              <div>
+                <div class="reason-title">Quiero ajustar algo del servicio</div>
+                <div class="reason-sub">Horario, duración, dinámica o algún detalle del paseo.</div>
+              </div>
+            </button>
+          </div>
+
+          <div class="form-group">
+            <label class="field-label" for="anonNote">¿Quieres dejarnos una nota? (Opcional y puede ser anónima)</label>
+            <textarea id="anonNote"
+              placeholder="No es obligatorio poner tu nombre ni dar explicaciones, pero si quieres contarnos algo, te leemos con gusto..."></textarea>
+          </div>
+
+          <button type="submit" class="btn-primary">Continuar</button>
+        </form>
+      </div>
+
+      <!-- Pantalla de agradecimiento para el cliente (Pausa) -->
+      <div id="thanks-pausa" class="thank-you-box">
+        <div class="thank-you-emoji">🌿🐾</div>
+        <div class="thank-you-title">¡Gracias por avisarnos!</div>
+        <p class="thank-you-text">Aquí siempre tienes las puertas abiertas cuando tú y tu peludo quieran retomar.
+          Presiona el botón para enviarnos el aviso directo a WhatsApp.</p>
+        <a id="waLinkPausa" href="#" target="_blank" rel="noopener" class="btn-wa">
+          Enviar aviso por WhatsApp
+        </a>
+        <button type="button" class="btn-secondary" onclick="resetPausaForm()">Volver</button>
+      </div>
+
+      <!-- Panel Interno (Solo visible con ?admin=malix2026) -->
+      <div id="adminPausaPanel" class="admin-panel">
+        <div id="classBadge" class="badge badge-green">TIPO: Externo</div>
+        <div class="copy-box">
+          <div class="copy-header">
+            <span>💬 Respuesta empática sugerida para WhatsApp</span>
+            <button type="button" class="copy-btn" onclick="copyText('waReplyOut', this)">Copiar</button>
+          </div>
+          <div id="waReplyOut" class="copy-content"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-registros" class="card hidden">
+      <h2 class="section-title">Registros de encuestas</h2>
+      <p class="section-desc">Respuestas guardadas en este navegador, de la más reciente a la más antigua.</p>
+      <p id="recordsStatus" class="section-desc" role="status"></p>
+      <div id="recordsList" class="records-list"></div>
+    </section>
+  </div>
+
+  <script>
+    // ==========================================
+    // 1. CONFIGURACIÓN PRINCIPAL (EDITA TU NÚMERO)
+    // ==========================================
+    const WHATSAPP_NUMBER = "529993665693"; // <-- Reemplaza por tu número de 10 dígitos con 52 al inicio
+    const ADMIN_KEY = "malix2026"; // Entra con ?admin=malix2026 para ver tu panel interno
+    const RECORDS_STORAGE_KEY = "malixSurveyRecords";
+
+    // Verificar si está en modo interno
+    const urlParams = new URLSearchParams(window.location.search);
+    const isAdmin = urlParams.get("admin") === ADMIN_KEY;
+
+    if (isAdmin) {
+      document.getElementById("adminBadge").style.display = "inline-block";
+      document.getElementById("recordsTabButton").classList.remove("hidden");
+      document.getElementById("surveyTabs").classList.add("admin-tabs");
+      renderRecords();
+    } else {
+      // Eliminar del DOM los paneles internos para que ningún cliente pueda verlos
+      document.getElementById("adminPostPanel").remove();
+      document.getElementById("adminPausaPanel").remove();
+      document.getElementById("recordsTabButton").remove();
+      document.getElementById("tab-registros").remove();
+    }
+
+    // ==========================================
+    // 2. NAVEGACIÓN ENTRE PESTAÑAS
+    // ==========================================
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        const target = btn.dataset.tab;
+        document.getElementById("tab-post-paseo").classList.toggle("hidden", target !== "post-paseo");
+        document.getElementById("tab-pausa").classList.toggle("hidden", target !== "pausa");
+        if (isAdmin) {
+          document.getElementById("tab-registros").classList.toggle("hidden", target !== "registros");
+          if (target === "registros") renderRecords();
+        }
+      });
+    });
+
+    function saveSurveyRecord(record) {
+      try {
+        const storedRecords = JSON.parse(localStorage.getItem(RECORDS_STORAGE_KEY) || "[]");
+        if (!Array.isArray(storedRecords)) {
+          throw new Error("El formato de los registros guardados no es válido.");
+        }
+        storedRecords.unshift(record);
+        localStorage.setItem(RECORDS_STORAGE_KEY, JSON.stringify(storedRecords));
+        if (isAdmin) renderRecords();
+        return true;
+      } catch (error) {
+        console.error("No se pudo guardar la respuesta de la encuesta.", error);
+        alert("No se pudo guardar tu respuesta en este navegador. Revisa el almacenamiento disponible e inténtalo de nuevo.");
+        return false;
+      }
+    }
+
+    function renderRecords() {
+      const recordsList = document.getElementById("recordsList");
+      const recordsStatus = document.getElementById("recordsStatus");
+      if (!recordsList || !recordsStatus) return;
+      recordsList.replaceChildren();
+      recordsStatus.textContent = "";
+
+      let records;
+      try {
+        records = JSON.parse(localStorage.getItem(RECORDS_STORAGE_KEY) || "[]");
+        if (!Array.isArray(records)) {
+          throw new Error("El formato de los registros guardados no es válido.");
+        }
+      } catch (error) {
+        console.error("No se pudieron leer los registros de encuestas.", error);
+        recordsStatus.textContent = "No se pudieron leer los registros guardados en este navegador.";
+        return;
+      }
+
+      if (records.length === 0) {
+        recordsStatus.textContent = "Todavía no hay respuestas guardadas en este navegador.";
+        return;
+      }
+
+      records.forEach((record, index) => {
+        const card = document.createElement("article");
+        card.className = "record-card";
+
+        const heading = document.createElement("div");
+        heading.className = "record-heading";
+        const surveyName = document.createElement("span");
+        surveyName.textContent = record.type || "Encuesta";
+        const date = document.createElement("time");
+        date.className = "record-date";
+        date.dateTime = record.createdAt || "";
+        const parsedDate = new Date(record.createdAt);
+        date.textContent = Number.isNaN(parsedDate.getTime()) ? "Fecha desconocida" : parsedDate.toLocaleString("es-MX");
+        heading.append(surveyName, date);
+        card.appendChild(heading);
+
+        const details = document.createElement("div");
+        details.className = "record-details";
+        details.textContent = Object.entries(record.answers || {})
+          .map(([label, value]) => `${label}: ${value === "" ? "—" : value}`)
+          .join("\n");
+        card.appendChild(details);
+
+        if (record.suggestedReply) {
+          const suggestion = document.createElement("div");
+          suggestion.className = "record-suggestion";
+          suggestion.textContent = `Respuesta sugerida:\n${record.suggestedReply}`;
+          card.appendChild(suggestion);
+        }
+
+        const actions = document.createElement("div");
+        actions.className = "record-actions";
+        const deleteButton = document.createElement("button");
+        deleteButton.type = "button";
+        deleteButton.className = "record-delete-btn";
+        deleteButton.textContent = "Borrar registro";
+        deleteButton.setAttribute("aria-label", `Borrar registro de ${record.type || "encuesta"}`);
+        deleteButton.addEventListener("click", () => deleteSurveyRecord(index));
+        actions.appendChild(deleteButton);
+        card.appendChild(actions);
+        recordsList.appendChild(card);
+      });
+    }
+
+    function deleteSurveyRecord(index) {
+      if (!isAdmin) return;
+      if (!window.confirm("¿Borrar este registro? Esta acción no se puede deshacer.")) return;
+
+      try {
+        const records = JSON.parse(localStorage.getItem(RECORDS_STORAGE_KEY) || "[]");
+        if (!Array.isArray(records) || index < 0 || index >= records.length) {
+          throw new Error("El registro seleccionado ya no está disponible.");
+        }
+        records.splice(index, 1);
+        localStorage.setItem(RECORDS_STORAGE_KEY, JSON.stringify(records));
+        renderRecords();
+      } catch (error) {
+        console.error("No se pudo borrar el registro de la encuesta.", error);
+        const recordsStatus = document.getElementById("recordsStatus");
+        recordsStatus.textContent = "No se pudo borrar el registro. Inténtalo de nuevo.";
+      }
+    }
+
+    // ==========================================
+    // 3. LÓGICA PESTAÑA 1: POST-PASEO
+    // ==========================================
+    let selectedStars = 5;
+    let selectedMood = "Feliz y cansado";
+    let selectedLike = "La puntualidad y reporte";
+    let selectedNps = 10;
+    let hasPhoto = false;
+
+    // Estrellas
+    const starBtns = document.querySelectorAll(".star-btn");
+    starBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        selectedStars = Number(btn.dataset.val);
+        starBtns.forEach(s => {
+          s.classList.toggle("active", Number(s.dataset.val) <= selectedStars);
+        });
+      });
+    });
+
+    // Pills de estado de ánimo
+    document.querySelectorAll("#moodPills .pill-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("#moodPills .pill-btn").forEach(b => b.classList.remove("selected"));
+        btn.classList.add("selected");
+        selectedMood = btn.dataset.val;
+      });
+    });
+
+    // Pills de qué gustó más
+    document.querySelectorAll("#likePills .pill-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("#likePills .pill-btn").forEach(b => b.classList.remove("selected"));
+        btn.classList.add("selected");
+        selectedLike = btn.dataset.val;
+      });
+    });
+
+    // Escala NPS 0-10
+    const npsGrid = document.getElementById("npsGrid");
+    for (let i = 0; i <= 10; i++) {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "nps-btn" + (i === 10 ? " selected" : "");
+      b.textContent = i;
+      b.addEventListener("click", () => {
+        selectedNps = i;
+        document.querySelectorAll(".nps-btn").forEach(x => x.classList.remove("selected"));
+        b.classList.add("selected");
+      });
+      npsGrid.appendChild(b);
+    }
+
+    // Previsualización de foto
+    document.getElementById("dogPhoto").addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      const preview = document.getElementById("photoPreview");
+      if (file) {
+        hasPhoto = true;
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = "block";
+      } else {
+        hasPhoto = false;
+        preview.style.display = "none";
+      }
+    });
+
+    // Envío Post-Paseo
+    document.getElementById("formPostPaseo").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const human = document.getElementById("humanName").value.trim();
+      const dog = document.getElementById("dogName").value.trim();
+      const comment = document.getElementById("extraComment").value.trim();
+      const auth = document.getElementById("authSocial").checked;
+      const suggestedReply = selectedStars >= 4 && selectedNps >= 9
+        ? `¡Hola, ${human}! Muchas gracias por compartir cómo estuvo el paseo de ${dog}. Me da mucho gusto saber que regresó ${selectedMood.toLowerCase()}. ¡Le mando un apapacho! 🐾`
+        : `¡Hola, ${human}! Gracias por contarme cómo estuvo el paseo de ${dog}. Leí tus comentarios y quiero asegurarme de que cada paseo sea una buena experiencia. Cuando puedas, cuéntame un poco más para revisar qué podemos ajustar. 🐾`;
+
+      // Construir mensaje limpio para WhatsApp
+      const starIcons = "⭐".repeat(selectedStars);
+      let waText = `Hola Mauricio, te comparto mi encuesta Post-Paseo de *El Perro Malix* 🐾\n\n`;
+      waText += `👤 *Humano:* ${human}\n`;
+      waText += `🐶 *Peludo:* ${dog}\n`;
+      waText += `🌟 *Calificación:* ${starIcons} (${selectedStars}/5)\n`;
+      waText += `😌 *Regresó:* ${selectedMood}\n`;
+      waText += `💚 *Lo que más gustó:* ${selectedLike}\n`;
+      waText += `📊 *Recomendación (NPS):* ${selectedNps}/10\n`;
+      if (comment) waText += `💬 *Comentario:* "${comment}"\n`;
+      waText += `📸 *Autoriza uso en redes/Google:* ${auth ? "Sí, con gusto" : "Solo uso interno"}`;
+
+      if (!saveSurveyRecord({
+        type: "Post-Paseo",
+        createdAt: new Date().toISOString(),
+        answers: {
+          "Nombre": human,
+          "Nombre del perro": dog,
+          "Calificación": `${selectedStars}/5`,
+          "Cómo regresó": selectedMood,
+          "Lo que más gustó": selectedLike,
+          "Recomendación (NPS)": `${selectedNps}/10`,
+          "Comentario": comment,
+          "Foto adjunta": hasPhoto ? "Sí (no se guarda el archivo)" : "No",
+          "Autorización para redes": auth ? "Sí" : "No"
+        },
+        suggestedReply
+      })) return;
+
+      const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waText)}`;
+      document.getElementById("waLinkPost").href = waUrl;
+      document.getElementById("thanksPostTitle").textContent = `¡Gracias, ${human}!`;
+      document.getElementById("photoReminder").style.display = hasPhoto ? "block" : "none";
+
+      // Mostrar pantalla cliente
+      document.getElementById("form-post-wrap").style.display = "none";
+      document.getElementById("thanks-post").style.display = "block";
+
+      // Si es modo admin, llenar los textos de Google Maps e IG
+      if (isAdmin) {
+        const extraLine = comment ? ` ${comment}` : "";
+        const googleText = `Excelente servicio de paseo con El Perro Malix (${selectedStars}/5 estrellas). ${dog} regresó ${selectedMood.toLowerCase()} y lo que más nos gustó fue ${selectedLike.toLowerCase()}.${extraLine} ¡Totalmente recomendado en Mérida!`;
+        const igText = `🐾✨ ¡${dog} disfrutando su caminata tranquila!\n\n"${selectedLike} y regresó ${selectedMood.toLowerCase()}." — ${human} (${selectedStars}/5 ⭐)${comment ? `\n\n💬 "${comment}"` : ""}\n\nCaminatas estructuradas y sin estrés en Mérida, Yucatán. 🌿🐕\n#ElPerroMalix #PaseoDePerrosMerida #CaminataTranquila #PerrosFelices`;
+
+        document.getElementById("googleReviewOut").textContent = googleText;
+        document.getElementById("igCopyOut").textContent = igText;
+        document.getElementById("postReplyOut").textContent = suggestedReply;
+        document.getElementById("adminPostPanel").style.display = "block";
+      }
+    });
+
+    function resetPostForm() {
+      document.getElementById("form-post-wrap").style.display = "block";
+      document.getElementById("thanks-post").style.display = "none";
+      if (isAdmin) document.getElementById("adminPostPanel").style.display = "none";
+    }
+
+    // ==========================================
+    // 4. LÓGICA PESTAÑA 2: PAUSA / CANCELACIÓN
+    // ==========================================
+    let selectedReason = "Pausa temporal";
+    let selectedType = "Externo";
+
+    document.querySelectorAll(".reason-card").forEach(card => {
+      card.addEventListener("click", () => {
+        document.querySelectorAll(".reason-card").forEach(c => c.classList.remove("selected"));
+        card.classList.add("selected");
+        selectedReason = card.dataset.reason;
+        selectedType = card.dataset.type;
+      });
+    });
+
+    function getPausaSuggestedReply() {
+      if (selectedType === "Externo") {
+        return `¡Hola! Muchas gracias por avisarme con confianza. Entiendo perfectamente (${selectedReason.toLowerCase()}), aquí no hay ningún problema ni compromiso. Cuando todo se acomode y quieran retomar los paseos, me escribes y con muchísimo gusto agendamos de nuevo. ¡Un abrazo y apapacho a tu peludo! 🐾🌿`;
+      }
+      return "¡Hola! Muchas gracias por tomarte el tiempo de avisarme y por tu sinceridad. Para mí lo más importante es que tanto tú como tu peludo se sientan 100% cómodos y tranquilos con cada paseo. Si en algún momento quieres que ajustemos horario, dinámica o algún detalle, aquí estoy para escucharte sin ningún compromiso. ¡Saludos! 🐾";
+    }
+
+    document.getElementById("formPausa").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const note = document.getElementById("anonNote").value.trim();
+      const suggestedReply = getPausaSuggestedReply();
+
+      // Mensaje para WhatsApp con clasificación discreta
+      let waText = `Hola Mauricio, te envío un aviso desde la encuesta de *El Perro Malix* 🐾\n\n`;
+      waText += `📌 *Motivo:* ${selectedReason}\n`;
+      waText += `🏷️ *Clasificación:* [TIPO: ${selectedType.toUpperCase()}]\n`;
+      if (note) waText += `💬 *Nota:* "${note}"\n`;
+
+      if (!saveSurveyRecord({
+        type: "Pausa / Ajuste",
+        createdAt: new Date().toISOString(),
+        answers: {
+          "Motivo": selectedReason,
+          "Clasificación": selectedType,
+          "Nota": note
+        },
+        suggestedReply
+      })) return;
+
+      const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waText)}`;
+      document.getElementById("waLinkPausa").href = waUrl;
+
+      // Mostrar pantalla cliente
+      document.getElementById("form-pausa-wrap").style.display = "none";
+      document.getElementById("thanks-pausa").style.display = "block";
+
+      // Si es modo admin, mostrar clasificación y respuesta empática
+      if (isAdmin) {
+        const badge = document.getElementById("classBadge");
+        const replyOut = document.getElementById("waReplyOut");
+
+        if (selectedType === "Externo") {
+          badge.className = "badge badge-green";
+          badge.textContent = "TIPO: Externo (No es por tu servicio)";
+        } else {
+          badge.className = "badge badge-yellow";
+          badge.textContent = "TIPO: Revisar Servicio";
+        }
+        replyOut.textContent = suggestedReply;
+
+        document.getElementById("adminPausaPanel").style.display = "block";
+      }
+    });
+
+    function resetPausaForm() {
+      document.getElementById("form-pausa-wrap").style.display = "block";
+      document.getElementById("thanks-pausa").style.display = "none";
+      if (isAdmin) document.getElementById("adminPausaPanel").style.display = "none";
+    }
+
+    // ==========================================
+    // 5. UTILIDAD COPIAR AL PORTAPAPELES (ADMIN)
+    // ==========================================
+    function copyText(elementId, btn) {
+      const text = document.getElementById(elementId).textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        const original = btn.textContent;
+        btn.textContent = "¡Copiado!";
+        setTimeout(() => btn.textContent = original, 1800);
+      });
+    }
+  </script>
+</body>
+
+</html>
