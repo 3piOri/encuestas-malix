@@ -14,6 +14,7 @@
   <meta property="og:title" content="El Perro Malix — Encuestas y Opiniones" />
   <meta property="og:description" content="Comparte tu opinión sobre el paseo de tu peludo o avísanos cualquier pausa o ajuste de servicio de forma rápida y sencilla." />
   <title>El Perro Malix — Encuestas</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     @font-face {
       font-family: 'Poppins';
@@ -109,10 +110,6 @@
       padding: 6px;
       border-radius: 14px;
       margin-bottom: 20px;
-    }
-
-    .tabs.admin-tabs {
-      grid-template-columns: repeat(3, 1fr);
     }
 
     .tab-btn {
@@ -306,6 +303,10 @@
       display: none;
     }
 
+    .file-box:hover {
+      background: #EFE4DA;
+    }
+
     .preview-img {
       max-width: 100%;
       max-height: 170px;
@@ -431,6 +432,17 @@
       cursor: pointer;
     }
 
+    .error-msg {
+      display: none;
+      background: #FDECEA;
+      color: #B42318;
+      border: 1px solid #F5C2BE;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 0.83rem;
+      margin-bottom: 14px;
+    }
+
     /* Client Thank You Screen */
     .thank-you-box {
       display: none;
@@ -531,62 +543,6 @@
       color: var(--text);
     }
 
-    .records-list {
-      display: grid;
-      gap: 12px;
-    }
-
-    .record-card {
-      background: #FCFBF8;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px;
-    }
-
-    .record-heading {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 8px;
-      color: var(--olive);
-      font-weight: 700;
-    }
-
-    .record-date,
-    .record-details {
-      font-size: 0.82rem;
-      color: var(--muted);
-      white-space: pre-wrap;
-      overflow-wrap: anywhere;
-    }
-
-    .record-suggestion {
-      margin-top: 10px;
-      padding-top: 10px;
-      border-top: 1px solid var(--border);
-      font-size: 0.84rem;
-      white-space: pre-wrap;
-      overflow-wrap: anywhere;
-    }
-
-    .record-actions {
-      display: flex;
-      justify-content: flex-end;
-      margin-top: 12px;
-    }
-
-    .record-delete-btn {
-      border: 1px solid #B42318;
-      border-radius: 8px;
-      padding: 7px 10px;
-      background: #FFF5F4;
-      color: #B42318;
-      font: inherit;
-      font-size: 0.8rem;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
     .hidden {
       display: none !important;
     }
@@ -599,6 +555,7 @@
       <div class="logo-wrap">
         <img class="brand-logo" src="./logo.png" alt="El Perro Malix — Caminata tranquila y obediencia en casa" />
         <div id="adminBadge" class="admin-pill">MODO INTERNO ACTIVO</div>
+        <a id="adminPageLink" class="admin-pill" href="./admin.html" style="text-decoration: none;">ABRIR ADMINISTRACIÓN</a>
       </div>
     </header>
 
@@ -606,7 +563,6 @@
     <div class="tabs" id="surveyTabs">
       <button class="tab-btn active" data-tab="post-paseo">🐾 Post-Paseo</button>
       <button class="tab-btn" data-tab="pausa">⏸️ Pausa / Ajuste</button>
-      <button class="tab-btn hidden" id="recordsTabButton" data-tab="registros">📋 Registros</button>
     </div>
 
     <!-- PESTAÑA 1: POST-PASEO -->
@@ -690,7 +646,8 @@
             </label>
           </div>
 
-          <button type="submit" class="btn-primary">Enviar mi opinión</button>
+          <div id="errorPost" class="error-msg" role="alert"></div>
+          <button type="submit" id="btnSubmitPost" class="btn-primary">Enviar mi opinión</button>
         </form>
       </div>
 
@@ -698,10 +655,10 @@
       <div id="thanks-post" class="thank-you-box">
         <div class="thank-you-emoji">🐾💚</div>
         <div class="thank-you-title" id="thanksPostTitle">¡Muchas gracias!</div>
-        <p class="thank-you-text">Para registrar tu respuesta al instante, solo presiona el botón verde y envíanos el
-          mensaje prellenado en WhatsApp.</p>
+        <p class="thank-you-text">Tu respuesta ya quedó registrada. Si quieres, también puedes enviarnos el mensaje
+          prellenado por WhatsApp.</p>
         <div id="photoReminder" class="photo-reminder">
-          📸 Recuerda adjuntar la foto de tu peludo directamente en el chat de WhatsApp al enviar.
+          📸 La foto se guardó junto con tu respuesta; no necesitas adjuntarla en WhatsApp.
         </div>
         <a id="waLinkPost" href="#" target="_blank" rel="noopener" class="btn-wa">
           Enviar respuestas por WhatsApp
@@ -784,7 +741,8 @@
               placeholder="No es obligatorio poner tu nombre ni dar explicaciones, pero si quieres contarnos algo, te leemos con gusto..."></textarea>
           </div>
 
-          <button type="submit" class="btn-primary">Continuar</button>
+          <div id="errorPausa" class="error-msg" role="alert"></div>
+          <button type="submit" id="btnSubmitPausa" class="btn-primary">Continuar</button>
         </form>
       </div>
 
@@ -793,7 +751,7 @@
         <div class="thank-you-emoji">🌿🐾</div>
         <div class="thank-you-title">¡Gracias por avisarnos!</div>
         <p class="thank-you-text">Aquí siempre tienes las puertas abiertas cuando tú y tu peludo quieran retomar.
-          Presiona el botón para enviarnos el aviso directo a WhatsApp.</p>
+          Tu aviso ya quedó registrado y también puedes enviárnoslo por WhatsApp.</p>
         <a id="waLinkPausa" href="#" target="_blank" rel="noopener" class="btn-wa">
           Enviar aviso por WhatsApp
         </a>
@@ -813,21 +771,24 @@
       </div>
     </section>
 
-    <section id="tab-registros" class="card hidden">
-      <h2 class="section-title">Registros de encuestas</h2>
-      <p class="section-desc">Respuestas guardadas en este navegador, de la más reciente a la más antigua.</p>
-      <p id="recordsStatus" class="section-desc" role="status"></p>
-      <div id="recordsList" class="records-list"></div>
-    </section>
   </div>
 
   <script>
+    // ==========================================
+    // 1. CONFIGURACIÓN DE SUPABASE
+    // ==========================================
+    const SUPABASE_URL = "https://qzgbkutvkkbnzidnsrku.supabase.co";
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_KJKIfqMVIwSM1IXGnrIZLw_6-3CP6bA";
+    const PHOTO_BUCKET = "fotos-encuestas";
+    const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+      auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false }
+    });
+
     // ==========================================
     // 1. CONFIGURACIÓN PRINCIPAL (EDITA TU NÚMERO)
     // ==========================================
     const WHATSAPP_NUMBER = "529993665693"; // <-- Reemplaza por tu número de 10 dígitos con 52 al inicio
     const ADMIN_KEY = "malix2026"; // Entra con ?admin=malix2026 para ver tu panel interno
-    const RECORDS_STORAGE_KEY = "malixSurveyRecords";
 
     // Verificar si está en modo interno
     const urlParams = new URLSearchParams(window.location.search);
@@ -835,15 +796,11 @@
 
     if (isAdmin) {
       document.getElementById("adminBadge").style.display = "inline-block";
-      document.getElementById("recordsTabButton").classList.remove("hidden");
-      document.getElementById("surveyTabs").classList.add("admin-tabs");
-      renderRecords();
+      document.getElementById("adminPageLink").style.display = "inline-block";
     } else {
       // Eliminar del DOM los paneles internos para que ningún cliente pueda verlos
       document.getElementById("adminPostPanel").remove();
       document.getElementById("adminPausaPanel").remove();
-      document.getElementById("recordsTabButton").remove();
-      document.getElementById("tab-registros").remove();
     }
 
     // ==========================================
@@ -856,116 +813,8 @@
         const target = btn.dataset.tab;
         document.getElementById("tab-post-paseo").classList.toggle("hidden", target !== "post-paseo");
         document.getElementById("tab-pausa").classList.toggle("hidden", target !== "pausa");
-        if (isAdmin) {
-          document.getElementById("tab-registros").classList.toggle("hidden", target !== "registros");
-          if (target === "registros") renderRecords();
-        }
       });
     });
-
-    function saveSurveyRecord(record) {
-      try {
-        const storedRecords = JSON.parse(localStorage.getItem(RECORDS_STORAGE_KEY) || "[]");
-        if (!Array.isArray(storedRecords)) {
-          throw new Error("El formato de los registros guardados no es válido.");
-        }
-        storedRecords.unshift(record);
-        localStorage.setItem(RECORDS_STORAGE_KEY, JSON.stringify(storedRecords));
-        if (isAdmin) renderRecords();
-        return true;
-      } catch (error) {
-        console.error("No se pudo guardar la respuesta de la encuesta.", error);
-        alert("No se pudo guardar tu respuesta en este navegador. Revisa el almacenamiento disponible e inténtalo de nuevo.");
-        return false;
-      }
-    }
-
-    function renderRecords() {
-      const recordsList = document.getElementById("recordsList");
-      const recordsStatus = document.getElementById("recordsStatus");
-      if (!recordsList || !recordsStatus) return;
-      recordsList.replaceChildren();
-      recordsStatus.textContent = "";
-
-      let records;
-      try {
-        records = JSON.parse(localStorage.getItem(RECORDS_STORAGE_KEY) || "[]");
-        if (!Array.isArray(records)) {
-          throw new Error("El formato de los registros guardados no es válido.");
-        }
-      } catch (error) {
-        console.error("No se pudieron leer los registros de encuestas.", error);
-        recordsStatus.textContent = "No se pudieron leer los registros guardados en este navegador.";
-        return;
-      }
-
-      if (records.length === 0) {
-        recordsStatus.textContent = "Todavía no hay respuestas guardadas en este navegador.";
-        return;
-      }
-
-      records.forEach((record, index) => {
-        const card = document.createElement("article");
-        card.className = "record-card";
-
-        const heading = document.createElement("div");
-        heading.className = "record-heading";
-        const surveyName = document.createElement("span");
-        surveyName.textContent = record.type || "Encuesta";
-        const date = document.createElement("time");
-        date.className = "record-date";
-        date.dateTime = record.createdAt || "";
-        const parsedDate = new Date(record.createdAt);
-        date.textContent = Number.isNaN(parsedDate.getTime()) ? "Fecha desconocida" : parsedDate.toLocaleString("es-MX");
-        heading.append(surveyName, date);
-        card.appendChild(heading);
-
-        const details = document.createElement("div");
-        details.className = "record-details";
-        details.textContent = Object.entries(record.answers || {})
-          .map(([label, value]) => `${label}: ${value === "" ? "—" : value}`)
-          .join("\n");
-        card.appendChild(details);
-
-        if (record.suggestedReply) {
-          const suggestion = document.createElement("div");
-          suggestion.className = "record-suggestion";
-          suggestion.textContent = `Respuesta sugerida:\n${record.suggestedReply}`;
-          card.appendChild(suggestion);
-        }
-
-        const actions = document.createElement("div");
-        actions.className = "record-actions";
-        const deleteButton = document.createElement("button");
-        deleteButton.type = "button";
-        deleteButton.className = "record-delete-btn";
-        deleteButton.textContent = "Borrar registro";
-        deleteButton.setAttribute("aria-label", `Borrar registro de ${record.type || "encuesta"}`);
-        deleteButton.addEventListener("click", () => deleteSurveyRecord(index));
-        actions.appendChild(deleteButton);
-        card.appendChild(actions);
-        recordsList.appendChild(card);
-      });
-    }
-
-    function deleteSurveyRecord(index) {
-      if (!isAdmin) return;
-      if (!window.confirm("¿Borrar este registro? Esta acción no se puede deshacer.")) return;
-
-      try {
-        const records = JSON.parse(localStorage.getItem(RECORDS_STORAGE_KEY) || "[]");
-        if (!Array.isArray(records) || index < 0 || index >= records.length) {
-          throw new Error("El registro seleccionado ya no está disponible.");
-        }
-        records.splice(index, 1);
-        localStorage.setItem(RECORDS_STORAGE_KEY, JSON.stringify(records));
-        renderRecords();
-      } catch (error) {
-        console.error("No se pudo borrar el registro de la encuesta.", error);
-        const recordsStatus = document.getElementById("recordsStatus");
-        recordsStatus.textContent = "No se pudo borrar el registro. Inténtalo de nuevo.";
-      }
-    }
 
     // ==========================================
     // 3. LÓGICA PESTAÑA 1: POST-PASEO
@@ -1034,18 +883,58 @@
       }
     });
 
-    // Envío Post-Paseo
-    document.getElementById("formPostPaseo").addEventListener("submit", (e) => {
+    async function saveSurveyToSupabase(record, file, dogName) {
+      if (file) {
+        if (!file.type.startsWith("image/")) {
+          throw new Error("El archivo seleccionado no es una imagen.");
+        }
+
+        const extensionMatch = file.name.match(/\.[a-z0-9]+$/i);
+        const extension = extensionMatch ? extensionMatch[0].toLowerCase() : ".img";
+        const safeDog = (dogName || "peludo")
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/[^a-zA-Z0-9]/g, "_")
+          .toLowerCase();
+        const uniqueId = window.crypto && typeof window.crypto.randomUUID === "function"
+          ? window.crypto.randomUUID()
+          : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+        const filePath = `${safeDog}/${uniqueId}${extension}`;
+        const { error: uploadError } = await db.storage
+          .from(PHOTO_BUCKET)
+          .upload(filePath, file, { cacheControl: "3600", upsert: false });
+
+        if (uploadError) throw uploadError;
+
+        const { data } = db.storage.from(PHOTO_BUCKET).getPublicUrl(filePath);
+        record.foto_url = data.publicUrl;
+      }
+
+      const { error: insertError } = await db.from("encuestas_malix").insert(record);
+      if (insertError) throw insertError;
+    }
+
+    function getPostPaseoSuggestedReply(human, dog) {
+      if (selectedStars >= 4 && selectedNps >= 9) {
+        return `¡Hola, ${human}! Muchas gracias por compartir cómo estuvo el paseo de ${dog}. Me da mucho gusto saber que regresó ${selectedMood.toLowerCase()}. ¡Le mando un apapacho! 🐾`;
+      }
+      return `¡Hola, ${human}! Gracias por contarme cómo estuvo el paseo de ${dog}. Leí tus comentarios y quiero asegurarme de que cada paseo sea una buena experiencia. Cuando puedas, cuéntame un poco más para revisar qué podemos ajustar. 🐾`;
+    }
+
+    document.getElementById("formPostPaseo").addEventListener("submit", async (e) => {
       e.preventDefault();
+      const btn = document.getElementById("btnSubmitPost");
+      const errorBox = document.getElementById("errorPost");
+      errorBox.style.display = "none";
+      btn.disabled = true;
+      btn.textContent = "Guardando tu opinión...";
+
       const human = document.getElementById("humanName").value.trim();
       const dog = document.getElementById("dogName").value.trim();
       const comment = document.getElementById("extraComment").value.trim();
       const auth = document.getElementById("authSocial").checked;
-      const suggestedReply = selectedStars >= 4 && selectedNps >= 9
-        ? `¡Hola, ${human}! Muchas gracias por compartir cómo estuvo el paseo de ${dog}. Me da mucho gusto saber que regresó ${selectedMood.toLowerCase()}. ¡Le mando un apapacho! 🐾`
-        : `¡Hola, ${human}! Gracias por contarme cómo estuvo el paseo de ${dog}. Leí tus comentarios y quiero asegurarme de que cada paseo sea una buena experiencia. Cuando puedas, cuéntame un poco más para revisar qué podemos ajustar. 🐾`;
-
-      // Construir mensaje limpio para WhatsApp
+      const file = document.getElementById("dogPhoto").files[0] || null;
+      const suggestedReply = getPostPaseoSuggestedReply(human, dog);
       const starIcons = "⭐".repeat(selectedStars);
       let waText = `Hola Mauricio, te comparto mi encuesta Post-Paseo de *El Perro Malix* 🐾\n\n`;
       waText += `👤 *Humano:* ${human}\n`;
@@ -1057,48 +946,69 @@
       if (comment) waText += `💬 *Comentario:* "${comment}"\n`;
       waText += `📸 *Autoriza uso en redes/Google:* ${auth ? "Sí, con gusto" : "Solo uso interno"}`;
 
-      if (!saveSurveyRecord({
-        type: "Post-Paseo",
-        createdAt: new Date().toISOString(),
-        answers: {
-          "Nombre": human,
-          "Nombre del perro": dog,
-          "Calificación": `${selectedStars}/5`,
-          "Cómo regresó": selectedMood,
-          "Lo que más gustó": selectedLike,
-          "Recomendación (NPS)": `${selectedNps}/10`,
-          "Comentario": comment,
-          "Foto adjunta": hasPhoto ? "Sí (no se guarda el archivo)" : "No",
-          "Autorización para redes": auth ? "Sí" : "No"
-        },
-        suggestedReply
-      })) return;
+      try {
+        await saveSurveyToSupabase({
+          tipo_encuesta: "post-paseo",
+          humano: human,
+          perro: dog,
+          estrellas: selectedStars,
+          estado_regreso: selectedMood,
+          lo_que_gusto: selectedLike,
+          nps: selectedNps,
+          comentario: comment || null,
+          autoriza_redes: auth,
+          foto_url: null
+        }, file, dog);
 
-      const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waText)}`;
-      document.getElementById("waLinkPost").href = waUrl;
-      document.getElementById("thanksPostTitle").textContent = `¡Gracias, ${human}!`;
-      document.getElementById("photoReminder").style.display = hasPhoto ? "block" : "none";
+        document.getElementById("waLinkPost").href =
+          `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waText)}`;
+        document.getElementById("thanksPostTitle").textContent = `¡Gracias, ${human}!`;
+        document.getElementById("photoReminder").style.display = file ? "block" : "none";
+        document.getElementById("form-post-wrap").style.display = "none";
+        document.getElementById("thanks-post").style.display = "block";
 
-      // Mostrar pantalla cliente
-      document.getElementById("form-post-wrap").style.display = "none";
-      document.getElementById("thanks-post").style.display = "block";
-
-      // Si es modo admin, llenar los textos de Google Maps e IG
-      if (isAdmin) {
-        const extraLine = comment ? ` ${comment}` : "";
-        const googleText = `Excelente servicio de paseo con El Perro Malix (${selectedStars}/5 estrellas). ${dog} regresó ${selectedMood.toLowerCase()} y lo que más nos gustó fue ${selectedLike.toLowerCase()}.${extraLine} ¡Totalmente recomendado en Mérida!`;
-        const igText = `🐾✨ ¡${dog} disfrutando su caminata tranquila!\n\n"${selectedLike} y regresó ${selectedMood.toLowerCase()}." — ${human} (${selectedStars}/5 ⭐)${comment ? `\n\n💬 "${comment}"` : ""}\n\nCaminatas estructuradas y sin estrés en Mérida, Yucatán. 🌿🐕\n#ElPerroMalix #PaseoDePerrosMerida #CaminataTranquila #PerrosFelices`;
-
-        document.getElementById("googleReviewOut").textContent = googleText;
-        document.getElementById("igCopyOut").textContent = igText;
-        document.getElementById("postReplyOut").textContent = suggestedReply;
-        document.getElementById("adminPostPanel").style.display = "block";
+        if (isAdmin) {
+          const extraLine = comment ? ` ${comment}` : "";
+          const googleText = `Excelente servicio de paseo con El Perro Malix (${selectedStars}/5 estrellas). ${dog} regresó ${selectedMood.toLowerCase()} y lo que más nos gustó fue ${selectedLike.toLowerCase()}.${extraLine} ¡Totalmente recomendado en Mérida!`;
+          const igText = `🐾✨ ¡${dog} disfrutando su caminata tranquila!\n\n"${selectedLike} y regresó ${selectedMood.toLowerCase()}." — ${human} (${selectedStars}/5 ⭐)${comment ? `\n\n💬 "${comment}"` : ""}\n\nCaminatas estructuradas y sin estrés en Mérida, Yucatán. 🌿🐕\n#ElPerroMalix #PaseoDePerrosMerida #CaminataTranquila #PerrosFelices`;
+          document.getElementById("googleReviewOut").textContent = googleText;
+          document.getElementById("igCopyOut").textContent = igText;
+          document.getElementById("postReplyOut").textContent = suggestedReply;
+          document.getElementById("adminPostPanel").style.display = "block";
+        }
+      } catch (error) {
+        console.error("No se pudo guardar la encuesta Post-Paseo en Supabase.", error);
+        errorBox.textContent = file
+          ? "No se pudo guardar tu encuesta o subir la foto. Revisa tu conexión y los permisos de Supabase, e inténtalo de nuevo."
+          : "No se pudo guardar tu encuesta. Revisa tu conexión y los permisos de Supabase, e inténtalo de nuevo.";
+        errorBox.style.display = "block";
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Enviar mi opinión";
       }
     });
 
     function resetPostForm() {
+      document.getElementById("formPostPaseo").reset();
+      document.getElementById("photoPreview").style.display = "none";
+      hasPhoto = false;
+      selectedStars = 5;
+      selectedMood = "Feliz y cansado";
+      selectedLike = "La puntualidad y reporte";
+      selectedNps = 10;
+      starBtns.forEach(button => button.classList.add("active"));
+      document.querySelectorAll("#moodPills .pill-btn").forEach(button => {
+        button.classList.toggle("selected", button.dataset.val === selectedMood);
+      });
+      document.querySelectorAll("#likePills .pill-btn").forEach(button => {
+        button.classList.toggle("selected", button.dataset.val === selectedLike);
+      });
+      document.querySelectorAll(".nps-btn").forEach(button => {
+        button.classList.toggle("selected", Number(button.textContent) === selectedNps);
+      });
       document.getElementById("form-post-wrap").style.display = "block";
       document.getElementById("thanks-post").style.display = "none";
+      document.getElementById("errorPost").style.display = "none";
       if (isAdmin) document.getElementById("adminPostPanel").style.display = "none";
     }
 
@@ -1124,8 +1034,14 @@
       return "¡Hola! Muchas gracias por tomarte el tiempo de avisarme y por tu sinceridad. Para mí lo más importante es que tanto tú como tu peludo se sientan 100% cómodos y tranquilos con cada paseo. Si en algún momento quieres que ajustemos horario, dinámica o algún detalle, aquí estoy para escucharte sin ningún compromiso. ¡Saludos! 🐾";
     }
 
-    document.getElementById("formPausa").addEventListener("submit", (e) => {
+    document.getElementById("formPausa").addEventListener("submit", async (e) => {
       e.preventDefault();
+      const btn = document.getElementById("btnSubmitPausa");
+      const errorBox = document.getElementById("errorPausa");
+      errorBox.style.display = "none";
+      btn.disabled = true;
+      btn.textContent = "Guardando tu aviso...";
+
       const note = document.getElementById("anonNote").value.trim();
       const suggestedReply = getPausaSuggestedReply();
 
@@ -1135,45 +1051,54 @@
       waText += `🏷️ *Clasificación:* [TIPO: ${selectedType.toUpperCase()}]\n`;
       if (note) waText += `💬 *Nota:* "${note}"\n`;
 
-      if (!saveSurveyRecord({
-        type: "Pausa / Ajuste",
-        createdAt: new Date().toISOString(),
-        answers: {
-          "Motivo": selectedReason,
-          "Clasificación": selectedType,
-          "Nota": note
-        },
-        suggestedReply
-      })) return;
+      try {
+        await saveSurveyToSupabase({
+          tipo_encuesta: "pausa",
+          comentario: note || null,
+          motivo_pausa: selectedReason,
+          clasificacion_interna: selectedType,
+          autoriza_redes: false,
+          foto_url: null
+        }, null, null);
 
-      const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waText)}`;
-      document.getElementById("waLinkPausa").href = waUrl;
+        document.getElementById("waLinkPausa").href =
+          `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waText)}`;
+        document.getElementById("form-pausa-wrap").style.display = "none";
+        document.getElementById("thanks-pausa").style.display = "block";
 
-      // Mostrar pantalla cliente
-      document.getElementById("form-pausa-wrap").style.display = "none";
-      document.getElementById("thanks-pausa").style.display = "block";
-
-      // Si es modo admin, mostrar clasificación y respuesta empática
-      if (isAdmin) {
-        const badge = document.getElementById("classBadge");
-        const replyOut = document.getElementById("waReplyOut");
-
-        if (selectedType === "Externo") {
-          badge.className = "badge badge-green";
-          badge.textContent = "TIPO: Externo (No es por tu servicio)";
-        } else {
-          badge.className = "badge badge-yellow";
-          badge.textContent = "TIPO: Revisar Servicio";
+        if (isAdmin) {
+          const badge = document.getElementById("classBadge");
+          const replyOut = document.getElementById("waReplyOut");
+          if (selectedType === "Externo") {
+            badge.className = "badge badge-green";
+            badge.textContent = "TIPO: Externo (No es por tu servicio)";
+          } else {
+            badge.className = "badge badge-yellow";
+            badge.textContent = "TIPO: Revisar Servicio";
+          }
+          replyOut.textContent = suggestedReply;
+          document.getElementById("adminPausaPanel").style.display = "block";
         }
-        replyOut.textContent = suggestedReply;
-
-        document.getElementById("adminPausaPanel").style.display = "block";
+      } catch (error) {
+        console.error("No se pudo guardar la encuesta Pausa / Ajuste en Supabase.", error);
+        errorBox.textContent = "No se pudo guardar tu aviso. Revisa tu conexión y los permisos de Supabase, e inténtalo de nuevo.";
+        errorBox.style.display = "block";
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Continuar";
       }
     });
 
     function resetPausaForm() {
+      document.getElementById("formPausa").reset();
+      selectedReason = "Pausa temporal";
+      selectedType = "Externo";
+      document.querySelectorAll(".reason-card").forEach(card => {
+        card.classList.toggle("selected", card.dataset.reason === selectedReason);
+      });
       document.getElementById("form-pausa-wrap").style.display = "block";
       document.getElementById("thanks-pausa").style.display = "none";
+      document.getElementById("errorPausa").style.display = "none";
       if (isAdmin) document.getElementById("adminPausaPanel").style.display = "none";
     }
 
