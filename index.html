@@ -732,6 +732,11 @@
         </p>
 
         <form id="formPausa">
+          <div class="form-group">
+            <label class="field-label" for="pausaDogName">Nombre de tu perro *</label>
+            <input type="text" id="pausaDogName" placeholder="Ej. Tucho" required />
+          </div>
+
           <div class="reason-cards" id="reasonCards">
             <button type="button" class="reason-card selected" data-reason="Pausa temporal" data-type="Externo">
               <span class="reason-icon">🗓️</span>
@@ -1059,11 +1064,11 @@
       });
     });
 
-    function getPausaSuggestedReply() {
+    function getPausaSuggestedReply(dog) {
       if (selectedType === "Externo") {
-        return `¡Hola! Muchas gracias por avisarme con confianza. Entiendo perfectamente (${selectedReason.toLowerCase()}), aquí no hay ningún problema ni compromiso. Cuando todo se acomode y quieran retomar los paseos, me escribes y con muchísimo gusto agendamos de nuevo. ¡Un abrazo y apapacho a tu peludo! 🐾🌿`;
+        return `¡Hola! Muchas gracias por avisarme con confianza. Entiendo perfectamente (${selectedReason.toLowerCase()}), aquí no hay ningún problema ni compromiso. Cuando todo se acomode y quieran retomar los paseos con ${dog}, me escribes y con muchísimo gusto agendamos de nuevo. ¡Un abrazo y apapacho para ${dog}! 🐾🌿`;
       }
-      return "¡Hola! Muchas gracias por tomarte el tiempo de avisarme y por tu sinceridad. Para mí lo más importante es que tanto tú como tu peludo se sientan 100% cómodos y tranquilos con cada paseo. Si en algún momento quieres que ajustemos horario, dinámica o algún detalle, aquí estoy para escucharte sin ningún compromiso. ¡Saludos! 🐾";
+      return `¡Hola! Muchas gracias por tomarte el tiempo de avisarme y por tu sinceridad. Para mí lo más importante es que tanto tú como ${dog} se sientan 100% cómodos y tranquilos con cada paseo. Si en algún momento quieres que ajustemos horario, dinámica o algún detalle, aquí estoy para escucharte sin ningún compromiso. ¡Saludos! 🐾`;
     }
 
     document.getElementById("formPausa").addEventListener("submit", async (e) => {
@@ -1074,11 +1079,21 @@
       btn.disabled = true;
       btn.textContent = "Guardando tu aviso...";
 
+      const dog = document.getElementById("pausaDogName").value.trim();
+      if (!dog) {
+        errorBox.textContent = "Escribe el nombre de tu perro para continuar.";
+        errorBox.style.display = "block";
+        btn.disabled = false;
+        btn.textContent = "Continuar";
+        document.getElementById("pausaDogName").focus();
+        return;
+      }
       const note = document.getElementById("anonNote").value.trim();
-      const suggestedReply = getPausaSuggestedReply();
+      const suggestedReply = getPausaSuggestedReply(dog);
 
       // Mensaje para WhatsApp con clasificación discreta
       let waText = `Hola Mauricio, te envío un aviso desde la encuesta de *El Perro Malix* 🐾\n\n`;
+      waText += `🐶 *Peludo:* ${dog}\n`;
       waText += `📌 *Motivo:* ${selectedReason}\n`;
       waText += `🏷️ *Clasificación:* [TIPO: ${selectedType.toUpperCase()}]\n`;
       if (note) waText += `💬 *Nota:* "${note}"\n`;
@@ -1086,6 +1101,7 @@
       try {
         await saveSurveyToSupabase({
           tipo_encuesta: "pausa",
+          perro: dog,
           comentario: note || null,
           motivo_pausa: selectedReason,
           clasificacion_interna: selectedType,

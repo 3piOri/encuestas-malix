@@ -253,9 +253,9 @@
       }
 
       if (record.clasificacion_interna === "Externo") {
-        return `¡Hola! Muchas gracias por avisarme con confianza. Entiendo perfectamente (${(record.motivo_pausa || "").toLowerCase()}), aquí no hay ningún problema ni compromiso. Cuando todo se acomode y quieran retomar los paseos, me escribes y con muchísimo gusto agendamos de nuevo. ¡Un abrazo y apapacho a tu peludo! 🐾🌿`;
+        return `¡Hola! Muchas gracias por avisarme con confianza. Entiendo perfectamente (${(record.motivo_pausa || "").toLowerCase()}), aquí no hay ningún problema ni compromiso. Cuando todo se acomode y quieran retomar los paseos con ${record.perro || "tu peludo"}, me escribes y con muchísimo gusto agendamos de nuevo. ¡Un abrazo y apapacho para ${record.perro || "tu peludo"}! 🐾🌿`;
       }
-      return "¡Hola! Muchas gracias por tomarte el tiempo de avisarme y por tu sinceridad. Para mí lo más importante es que tanto tú como tu peludo se sientan 100% cómodos y tranquilos con cada paseo. Si en algún momento quieres que ajustemos horario, dinámica o algún detalle, aquí estoy para escucharte sin ningún compromiso. ¡Saludos! 🐾";
+      return `¡Hola! Muchas gracias por tomarte el tiempo de avisarme y por tu sinceridad. Para mí lo más importante es que tanto tú como ${record.perro || "tu peludo"} se sientan 100% cómodos y tranquilos con cada paseo. Si en algún momento quieres que ajustemos horario, dinámica o algún detalle, aquí estoy para escucharte sin ningún compromiso. ¡Saludos! 🐾`;
     }
 
     function recordDetails(record) {
@@ -271,6 +271,7 @@
           ["Autoriza uso en redes", record.autoriza_redes ? "Sí" : "No"]
         ]
         : [
+          ["Perro", record.perro],
           ["Motivo", record.motivo_pausa],
           ["Clasificación", record.clasificacion_interna],
           ["Nota", record.comentario]
